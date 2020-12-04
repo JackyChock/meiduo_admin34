@@ -39,7 +39,7 @@ class GoodsChannel(BaseModel):
     """商品频道"""
     # a=models.OneToOneField('',related_name='')
     # a=models.ManyToManyField('',related_name='')
-    group = models.ForeignKey(GoodsChannelGroup, verbose_name='频道组名')
+    group = models.ForeignKey(GoodsChannelGroup, verbose_name='频道组名', on_delete=models.CASCADE,)
     category = models.ForeignKey(GoodsCategory, related_name='channels', on_delete=models.CASCADE,
                                  verbose_name='顶级商品类别')
     url = models.CharField(max_length=50, verbose_name='频道页面链接')
