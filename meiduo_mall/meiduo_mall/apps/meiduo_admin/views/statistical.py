@@ -49,3 +49,18 @@ class UserActiveCountView(APIView):
             "count": count,
             "date": now_date
         })
+
+
+class UserOrderCountView(APIView):
+    # 指定管理员权限
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        # 获取当前日期
+        now_date = date.today()
+        # 获取当日下单用户数量  orders__create_time 订单创建时间
+        count = User.objects.filter(orders__create_time__gte=now_date).count()
+        return Response({
+            "count": count,
+            "date": now_date
+        })
