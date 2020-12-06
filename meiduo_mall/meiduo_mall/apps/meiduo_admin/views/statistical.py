@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from datetime import date, timedelta
 
+from meiduo_admin.serialziers.statistical import GoodsSerializer
 from users.models import User
+from goods.models import GoodsVisitCount
 
 
 class UserTotalCountView(APIView):
@@ -92,3 +94,16 @@ class UserMonthCountView(APIView):
             })
 
         return Response(date_list)
+
+
+class GoodsDayView(APIView):
+
+    def get(self,request):
+        # 获取当天日期
+        now_date = date.today()
+        # 获取当天访问的商品分类数量信息
+        data = GoodsVisitCount.objects.filter(date=now_date)
+        # 序列化返回分类数量
+        ser = GoodsSerializer(data, many=True)
+
+        return Response(ser.data)
