@@ -1,6 +1,7 @@
-from django.conf.urls import url
 from django.contrib import admin
+from django.urls import path
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
-    url(r'^', admin.site.urls),
+    path('authorizations/', obtain_jwt_token),
 ]

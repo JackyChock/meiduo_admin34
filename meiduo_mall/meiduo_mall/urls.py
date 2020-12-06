@@ -13,21 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf.urls import include
 from django.contrib import admin
+from django.urls import path
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('users.urls')),
-    url('^', include('verifycations.urls')),
-    url('^', include('contents.urls')),
-    url('^', include('oauth.urls')),
-    url('^', include('areas.urls')),
-    url('^', include('goods.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('users.urls')),
+    path('', include('verifycations.urls')),
+    path('', include('contents.urls')),
+    path('', include('oauth.urls')),
+    path('', include('areas.urls')),
+    path('', include('goods.urls')),
     # url(r'^search/', include('haystack.urls')),
-    url('^', include('carts.urls')),
-    url('^', include('orders.urls')),
-    url('^', include('payments.urls')),
-
+    path('', include('carts.urls')),
+    path('', include('orders.urls')),
+    path('', include('payments.urls')),
+    path('meiduo_admin/', include('meiduo_admin.urls')),
 
 ]
