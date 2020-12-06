@@ -19,3 +19,18 @@ class UserTotalCountView(APIView):
             'count': count,
             'date': now_date
         })
+
+
+class UserDayCountView(APIView):
+    # 指定管理员权限
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        # 获取当前日期
+        now_date = date.today()
+        # 获取当日注册用户数量 date_joined 记录创建账户时间
+        count = User.objects.filter(date_joined__gte=now_date).count()
+        return Response({
+            "count": count,
+            "date": now_date
+        })
