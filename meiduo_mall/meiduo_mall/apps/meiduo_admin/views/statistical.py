@@ -34,3 +34,18 @@ class UserDayCountView(APIView):
             "count": count,
             "date": now_date
         })
+
+
+class UserActiveCountView(APIView):
+    # 指定管理员权限
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        # 获取当前日期
+        now_date = date.today()
+        # 获取当日登录用户数量  last_login记录最后登录时间
+        count = User.objects.filter(last_login__gte=now_date).count()
+        return Response({
+            "count": count,
+            "date": now_date
+        })
