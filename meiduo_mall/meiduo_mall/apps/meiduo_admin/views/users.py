@@ -18,4 +18,4 @@ class UserView(ListAPIView):
         if keyword is '' or keyword is None:
             return User.objects.all()
         else:
-            return User.objects.filter(username=keyword)
+            return User.objects.filter(username__contains=self.request.query_params.get('keyword'))
