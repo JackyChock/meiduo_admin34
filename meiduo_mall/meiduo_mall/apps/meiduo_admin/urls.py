@@ -1,20 +1,90 @@
+from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
-from .views.statistical import UserTotalCountView, UserDayCountView, UserActiveCountView, UserOrderCountView, \
-    UserMonthCountView, GoodsDayView
-from .views.users import UserView
+from rest_framework.routers import DefaultRouter
+from .views import statistical, users, specs, images,skus,orders,permissions,group,admin
 
 urlpatterns = [
-    path('authorizations/', obtain_jwt_token),
-    # ------------  数据统计  ------------
-    path('statistical/total_count/', UserTotalCountView.as_view()),
-    path('statistical/day_increment/', UserDayCountView.as_view()),
-    path('statistical/day_active/', UserActiveCountView.as_view()),
-    path('statistical/day_orders/', UserOrderCountView.as_view()),
-    path('statistical/month_increment/', UserMonthCountView.as_view()),
-    path('statistical/goods_day_views/', GoodsDayView.as_view()),
-    # ------------  用户管理  ------------
-    path('users/', UserView.as_view()),
+    # 登录
+    url(r'^authorizations/$', obtain_jwt_token),
+    # --------------  数据统计 -----------------
+    # 用户总量
+    url(r'^statistical/total_count/$', statistical.UserCountView.as_view()),
+    # 日增用户
+    url(r'^statistical/day_increment/$', statistical.UserDayCountView.as_view()),
+    # 日活用户
+    url(r'^statistical/day_active/$', statistical.UserDayActiveCountView.as_view()),
+    # 下单用户
+    url(r'^statistical/day_orders/$', statistical.UserDayOrdersCountView.as_view()),
+    # 月增用户
+    url(r'^statistical/month_increment/$', statistical.UserMonthCountView.as_view()),
+
+    url(r'^statistical/goods_day_views/$', statistical.UserGoodsCountView.as_view()),
+
+    # ------------- 用户管理路由--------------
+    url(r'^users/$', users.UserView.as_view()),
+
+    # ------------规格路由表-----------
+    url(r'^goods/simple/$', specs.SpecsView.as_view({'get': 'simple'})),
+
+    # ------------图片路由————————————
+    url(r'^skus/simple/$', images.ImagesView.as_view({'get': 'simple'})),
+
+    # ------------sku路由————————————
+    url(r'^goods/(?P<pk>\d+)/specs/$', skus.SKUVIew.as_view({'get': 'specs'})),
+
+    # --------权限路由--------
+    url(r'^permission/content_types/$', permissions.PermissionsView.as_view({'get': 'content_type'})),
+
+    url(r'^permission/simple/$', group.GroupView.as_view({'get': 'simple'})),
+
+    url(r'^permission/groups/simple/$', admin.AdminView.as_view({'get': 'simple'})),
+
 
 ]
+
+# ----------规格表路由------
+router = DefaultRouter()
+router.register('goods/specs', specs.SpecsView, basename='specs')
+urlpatterns += router.urls
+
+# -------图片表路由------
+router = DefaultRouter()
+router.register('skus/images', images.ImagesView, basename='images')
+urlpatterns += router.urls
+
+# --------sku路由--------
+router = DefaultRouter()
+router.register('skus', skus.SKUVIew, basename='skus')
+urlpatterns += router.urls
+
+
+# --------订单路由--------
+router = DefaultRouter()
+router.register('orders', orders.OrderView, basename='orders')
+
+urlpatterns += router.urls
+
+
+# --------权限路由--------
+router = DefaultRouter()
+router.register('permission/perms', permissions.PermissionsView, basename='perms')
+
+urlpatterns += router.urls
+
+
+# --------分组路由--------
+router = DefaultRouter()
+router.register('permission/groups', group.GroupView, basename='groups')
+print(router.urls)
+urlpatterns += router.urls
+
+
+# --------管理员路由--------
+router = DefaultRouter()
+router.register('permission/admins',admin.AdminView, basename='admin')
+print(router.urls)
+urlpatterns += router.urls
+
+
+

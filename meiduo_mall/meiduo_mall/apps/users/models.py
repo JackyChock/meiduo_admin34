@@ -10,9 +10,6 @@ class User(AbstractUser):
     # 默认收货地址
     default_address = models.ForeignKey('users.Address', null=True, related_name='users', on_delete=models.CASCADE,)
 
-    class Meta:
-        ordering = ['id']
-
 
 class Address(BaseModel):
     # 关联用户

@@ -39,6 +39,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'www.meiduo.site',
     '127.0.0.1',
+    '192.168.50.180'
 ]
 
 # Application definition
@@ -63,7 +64,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'payments.apps.PaymentsConfig',
     'meiduo_admin.apps.MeiduoAdminConfig',
-    'corsheaders', # 跨域模块
+    'corsheaders',  # 跨域模块
 
     # 'haystack',
     'django_crontab',  # 定时任务
@@ -159,15 +160,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Shanghai'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -331,6 +332,8 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'  # 支持中文
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',
     'http://127.0.0.1:8000',
+    'http://192.168.50.180:8000',
+    'http://192.168.50.180:8080',
     'http://localhost:8080',
     'http://www.meiduo.site:8080',
     'http://api.meiduo.site:8000'
@@ -338,14 +341,20 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 
 REST_FRAMEWORK = {
+    # 指定认证
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
-
+# JWt配置
 JWT_AUTH = {
+    # 指定有效期
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'meiduo_admin.utils.jwt_response_payload_handler',
+    # 指定返回结果方法
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+        'meiduo_admin.utils.jwt_response_payload_handler',
 }
+
+FASTDFS_PATH = os.path.join(BASE_DIR, 'utils/fdfs/client.conf')

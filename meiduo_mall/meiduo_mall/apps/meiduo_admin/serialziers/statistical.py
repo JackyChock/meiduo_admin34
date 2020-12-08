@@ -2,10 +2,10 @@ from rest_framework import serializers
 from goods.models import GoodsVisitCount
 
 
-class GoodsSerializer(serializers.ModelSerializer):
-    # 指定返回分类名称
+class UserGoodsCountSerializer(serializers.ModelSerializer):
+    # 嵌套序列化返回字段指定
     category = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = GoodsVisitCount
-        fields = ('count', 'category')
+        fields = ('category', 'count')

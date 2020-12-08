@@ -4,7 +4,6 @@ from goods.models import GoodsCategory, GoodsChannel
 from .models import ContentCategory, Content
 from meiduo_mall.utils.categories import get_categories
 
-
 class IndexView(View):
     def get(self, request):
         #查询分类
